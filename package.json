@@ -1,0 +1,21 @@
+{
+  "name": "node-red-contrib-striot-filter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha \"test/**/*_spec.js\""
+  },
+  "author": "Jonny Spruce",
+  "license": "ISC",
+  "node-red": {
+    "nodes": {
+      "filter": "filter.js"
+    }
+  },
+  "devDependencies": {
+    "mocha": "^7.0.1",
+    "node-red": "^1.0.3",
+    "node-red-node-test-helper": "^0.2.3"
+  }
+}

@@ -1,0 +1,35 @@
+<script type="text/javascript">
+  RED.nodes.registerType("filter", {
+    category: "Striot",
+    color: "#a6bbcf",
+    defaults: {
+      name: {
+        value: ""
+      },
+      code: {
+        value: "-- Write your filter function body here",
+        required: true,
+        validate: () => true
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "file.png",
+    label: function() {
+      return this.name || "filter";
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="filter">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+    <label for="node-input-name"><i class="icon-tag"></i> Filter Function</label>
+    <textarea id="node-input-code" placeholder="Filter Function">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="lower-case">
+  <p>Filter Node for use with the StrIoT system.</p>
+</script>
