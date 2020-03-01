@@ -24,7 +24,15 @@ Then in your Node-RED directory, simply install the nodes by running:
 
 `npm i /path/to/cloned/repository`
 
-The next time you start Node-RED, there will be a new section of nodes labelled **StrIoT**, where you will find all supported nodes for the [StrIoT](https://github.com/striot/striot/) system.
+### Running
+
+Start Node-RED from the terminal with the command `node-red`, and there will be a new section of nodes labelled **StrIoT**, where you will find all supported nodes for the [StrIoT](https://github.com/striot/striot/) system.
+
+Simply drag and drop the nodes onto the canvas, and double click on a node to edit it's properties and add code etc.
+
+### Exporting
+
+From the Node-RED window, click the menu button in the top right corner, then **Export**, to view the export screen. Select the options you wish to use and then click **Download** to download the exported stream processing graph. You can then pass this JSON file to the [StrIoT GUI](https://github.com/JonnySpruce/striot-gui) program, which will automatically generate your inputs for the [StrIoT](https://github.com/striot/striot/) system.
 
 ## Nodes Added
 
