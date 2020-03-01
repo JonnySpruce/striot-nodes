@@ -1,21 +1,16 @@
 {
-  "name": "node-red-contrib-striot-filter",
+  "name": "node-red-contrib-striot-nodes",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha \"test/**/*_spec.js\""
-  },
+  "description": "Adds a number of nodes to Node-Red which allow for development of Striot stream processing graphs.",
+  "main": "none",
   "author": "Jonny Spruce",
   "license": "ISC",
   "node-red": {
     "nodes": {
-      "filter": "filter.js"
+      "filter": "nodes/filter.js"
     }
   },
   "devDependencies": {
-    "mocha": "^7.0.1",
-    "node-red": "^1.0.3",
-    "node-red-node-test-helper": "^0.2.3"
+    "node-red": "^1.0.3"
   }
 }
