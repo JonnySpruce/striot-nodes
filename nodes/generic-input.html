@@ -1,14 +1,14 @@
-<script type="text/x-red" data-template-name="filter">
+<script type="text/x-red" data-template-name="generic-input">
   <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <div style="display: inline-block; width: calc(100% - 105px)"><input type="text" id="node-input-name"></div>
     </div>
     <div class="form-row">
-        <label for="node-input-output"><i class="fas fa-long-arrow-alt-right"></i> Output type</label>
+        <label for="node-input-output"><i class="fa fa-long-arrow-alt-right"></i> Output type</label>
         <div style="display: inline-block; width: calc(100% - 105px)"><input type="text" id="node-input-output"></div>
     </div>
     <div class="form-row" style="margin-bottom: 0px;">
-        <label for="node-input-func"><i class="fa fa-wrench"></i> Filter function</label>
+        <label for="node-input-func"><i class="fa fa-wrench"></i> Input function</label>
         <input type="hidden" id="node-input-func" autofocus="autofocus">
     </div>
     <div class="form-row node-text-editor-row" style="position:relative">
@@ -16,18 +16,8 @@
         <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-func-editor" ></div>
     </div>
 </script>
-<script type="text/html" data-help-name="filter">
-  <p>Filters streams based on a user-defined function.</p>
-
-  <h3>Inputs</h3>
-  <ol class="node-ports">
-    <li>Stream in
-      <dl class="message-properties">
-        <dt>Stream <span class="property-type">StrIoT Stream</span></dt>
-        <dd>the stream passed from the previous node. </dd>
-      </dl>
-    </li>
-  </ol>
+<script type="text/html" data-help-name="generic-input">
+  <p>Allows any user-defined function to be used as an input to the stream.</p>
 
   <h3>Properties</h3>
   <dl class="message-properties">
@@ -35,10 +25,14 @@
       <span class="property-type">Haskell type</span>
     </dt>
     <dd> the Haskell type output by the function defined in this node. </dd>
-    <dt>Filter function
+    <dt>Input function
       <span class="property-type">Haskell function</span>
     </dt>
-    <dd> the filter function to apply to the stream. </dd>
+    <dd> the function used to generate the stream data. The function needs to simply output data of the type defined by
+      the <strong>Output Type</strong> property. For example: <br>
+      <code>do</code><br>
+      &nbsp;&nbsp;<code> threadDelay (1000*1000)</code><br>
+      &nbsp;&nbsp;<code> return "Hello World!"</code></dd>
     <!-- <dt class="optional">example <span class="property-type">string</span></dt>
     <dd> .</dd> -->
   </dl>
@@ -48,43 +42,44 @@
     <li>Stream out
       <dl class="message-properties">
         <dt>Stream <span class="property-type">StrIoT Stream</span></dt>
-        <dd>a stream containing only those events that satisfy the filter function.</dd>
+        <dd>a stream containing the data produced by the input function.</dd>
       </dl>
     </li>
   </ol>
 
   <h3>Details</h3>
-  <p>The filter node takes a stream as input, and generates a stream containing only those events that satisfy
-    the filter function.</p>
+  <p>This node allows you to define any function as an input to the Stream. This allows complete flexibility when
+    sourcing or generating Stream data.</p>
+  <p>The function needs to simply output data of the type defined by
+    the <strong>Output Type</strong> property.</p>
 
   <h3>References</h3>
   <ul>
-    <li><a href="https://github.com/striot/striot/blob/master/docs/Operators.md#filter">StrIot Filter documentation</a>
-      - full
-      description of the StrIoT Filter type</li>
+    <li><a href="https://github.com/striot/striot/">StrIot GitHub page</a> - full
+      documentation for StrIoT</li>
   </ul>
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("filter", {
-    color: "#fdd0a2",
+  RED.nodes.registerType("generic-input", {
+    color: "#C0C0C0",
     category: "StrIoT",
     defaults: {
       name: {
         value: ""
       },
       func: {
-        value: "filter :: Int -> Bool\n-- complete your definition here"
+        value: "-- add your code to produce an input here"
       },
       output: {
         value: "String"
       }
     },
-    inputs: 1,
+    inputs: 0,
     outputs: 1,
-    icon: "fontawesome/fa-filter",
+    icon: "fontawesome/fa-sign-in",
     label: function () {
-      return this.name || "filter";
+      return this.name || "generic input";
     },
     labelStyle: function () {
       return this.name ? "node_label_italic" : "";
@@ -114,10 +109,10 @@
 
       RED.library.create({
         url: "functions", // where to get the data from
-        type: "filter", // the type of object the library is for
+        type: "generic-input", // the type of object the library is for
         editor: this.editor, // the field name the main text body goes to
         mode: "ace/mode/text",
-        fields: ["name", "outputs"],
+        fields: [],
         ext: "hs"
       });
       this.editor.focus();
