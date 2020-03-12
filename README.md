@@ -36,6 +36,7 @@ From the Node-RED window, click the menu button in the top right corner, then **
 
 ## Nodes Added
 
-| Name   | Description                                                                                               |
-| ------ | --------------------------------------------------------------------------------------------------------- |
-| Filter | Takes one input and one output and filters the input based on the Haskell function you write in the node. |
+| Name          | Description                                                            |
+| ------------- | ---------------------------------------------------------------------- |
+| Filter        | Filters streams based on a user-defined function.                      |
+| Generic Input | Allows any user-defined function to be used as an input to the stream. |
