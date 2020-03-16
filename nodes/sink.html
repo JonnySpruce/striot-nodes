@@ -1,14 +1,10 @@
-<script type="text/x-red" data-template-name="generic-input">
+<script type="text/x-red" data-template-name="sink">
   <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <div style="display: inline-block; width: calc(100% - 105px)"><input type="text" id="node-input-name"></div>
     </div>
-    <div class="form-row">
-        <label for="node-input-output"><i class="fa fa-long-arrow-alt-right"></i> Output type</label>
-        <div style="display: inline-block; width: calc(100% - 105px)"><input type="text" id="node-input-output"></div>
-    </div>
     <div class="form-row" style="margin-bottom: 0px;">
-        <label for="node-input-func"><i class="fa fa-wrench"></i> Input function</label>
+        <label for="node-input-func"><i class="fa fa-wrench"></i> Output function</label>
         <input type="hidden" id="node-input-func" autofocus="autofocus">
     </div>
     <div class="form-row node-text-editor-row" style="position:relative">
@@ -16,42 +12,32 @@
         <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-func-editor" ></div>
     </div>
 </script>
-<script type="text/html" data-help-name="generic-input">
-  <p>Allows any user-defined function to be used as an input to the stream.</p>
+<script type="text/html" data-help-name="sink">
+  <p>Acts as the output for the stream - allows you to write any function to handle the final data.</p>
 
-  <h3>Properties</h3>
-  <dl class="message-properties">
-    <dt>Output type
-      <span class="property-type">Haskell type</span>
-    </dt>
-    <dd> the Haskell type output by the function defined in this node. </dd>
-    <dt>Input function
-      <span class="property-type">Haskell function</span>
-    </dt>
-    <dd> the function used to generate the stream data. The function needs to simply output data of the type defined by
-      the <strong>Output Type</strong> property. For example: <br>
-      <code>do</code><br>
-      &nbsp;&nbsp;<code> threadDelay (1000*1000)</code><br>
-      &nbsp;&nbsp;<code> return "Hello World!"</code></dd>
-    <!-- <dt class="optional">example <span class="property-type">string</span></dt>
-    <dd> .</dd> -->
-  </dl>
-
-  <h3>Outputs</h3>
+  <h3>Inputs</h3>
   <ol class="node-ports">
-    <li>Stream out
+    <li>Stream in
       <dl class="message-properties">
         <dt>Stream <span class="property-type">StrIoT Stream</span></dt>
-        <dd>a stream containing the data produced by the input function.</dd>
+        <dd>the stream passed from the previous node. </dd>
       </dl>
     </li>
   </ol>
 
+  <h3>Properties</h3>
+  <dl class="message-properties">
+    <dt>Output function
+      <span class="property-type">Haskell function</span>
+    </dt>
+    <dd> the output function to execute on each item in the stream. </dd>
+    <!-- <dt class="optional">example <span class="property-type">string</span></dt>
+    <dd> .</dd> -->
+  </dl>
+
   <h3>Details</h3>
-  <p>This node allows you to define any function as an input to the Stream. This allows complete flexibility when
-    sourcing or generating Stream data.</p>
-  <p>The function needs to simply output data of the type defined by
-    the <strong>Output Type</strong> property.</p>
+  <p>The sink node takes a stream as input, and allows you to write any function to do something with this data, e.g.
+    print to console or save to file etc.</p>
 
   <h3>References</h3>
   <ul>
@@ -61,25 +47,25 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("generic-input", {
-    color: "#C0C0C0",
+  RED.nodes.registerType("sink", {
+    color: "#E6E0F8",
     category: "StrIoT",
     defaults: {
       name: {
         value: ""
       },
       func: {
-        value: "-- add your code to produce an input here"
+        value: "-- complete your definition here"
       },
       output: {
-        value: "String"
+        value: "IO ()"
       }
     },
-    inputs: 0,
-    outputs: 1,
-    icon: "font-awesome/fa-sign-in",
+    inputs: 1,
+    outputs: 0,
+    icon: "font-awesome/fa-sign-out",
     label: function () {
-      return this.name || "generic input";
+      return this.name || "sink";
     },
     labelStyle: function () {
       return this.name ? "node_label_italic" : "";
@@ -109,10 +95,10 @@
 
       RED.library.create({
         url: "functions", // where to get the data from
-        type: "generic-input", // the type of object the library is for
+        type: "sink", // the type of object the library is for
         editor: this.editor, // the field name the main text body goes to
         mode: "ace/mode/text",
-        fields: [],
+        fields: ["name", "outputs"],
         ext: "hs"
       });
       this.editor.focus();
