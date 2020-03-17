@@ -1,90 +1,117 @@
-<script type="text/x-red" data-template-name="generic-input">
+<script type="text/x-red" data-template-name="generation-options">
   <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <div style="display: inline-block; width: calc(100% - 105px)"><input type="text" id="node-input-name"></div>
     </div>
     <div class="form-row">
-        <label for="node-input-output"><i class="fa fa-long-arrow-alt-right"></i> Output type</label>
-        <div style="display: inline-block; width: calc(100% - 105px)"><input type="text" id="node-input-output"></div>
+        <label style="display: block; width: 100%" for="node-input-imports"><i class="fa fa-sign-in"></i> Imports
+          (comma separated list)</label>
+        <div><input style="display: block; width: 100%" type="text" id="node-input-imports"></div>
+    </div>
+    <div class="form-row">
+      <label style="display: block; width: 100%;" for="node-input-packages"><i
+          class="fa fa-cloud-download"></i>
+        Packages (comma separated
+        list)</label>
+      <div><input style="display: block; width: 100%; font-family: monospace" type="text" id="node-input-packages">
+      </div>
+    </div>
+    <div class="form-row">
+      <label for="node-input-optimise"><i class="fa fa-cog"></i>
+        Optimisation</label>
+        <div style="width:100%"></div>
+        &emsp;<div style="display:inline-block; width:auto;"><input type="checkbox" id="node-input-optimise"
+          style="display:inline-block; width:auto; vertical-align:top;">
+      Enable logical optimisation</div>
     </div>
     <div class="form-row" style="margin-bottom: 0px;">
-        <label for="node-input-func"><i class="fa fa-wrench"></i> Input function</label>
-        <input type="hidden" id="node-input-func" autofocus="autofocus">
+        <label style="width: calc(100% - 105px)" for="node-input-func"><i class="fa fa-code" aria-hidden="true"></i>
+          Pre-source
+          function</label>
+        <input style="font-family: monospace;" type="hidden" id="node-input-func" autofocus="autofocus">
     </div>
     <div class="form-row node-text-editor-row" style="position:relative">
         <div style="position: absolute; right:0; bottom:calc(100% + 3px);"><button id="node-function-expand-js" class="red-ui-button red-ui-button-small"><i class="fa fa-expand"></i></button></div>
         <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-func-editor" ></div>
     </div>
 </script>
-<script type="text/html" data-help-name="generic-input">
-  <p>Allows any user-defined function to be used as an input to the stream.</p>
+<script type="text/html" data-help-name="generation-options">
+  <p>Allows definition of the generation options, including imports, packages, presource code and optimisation settings.
+  </p>
 
   <h3>Properties</h3>
   <dl class="message-properties">
-    <dt>Output type
-      <span class="property-type">Haskell type</span>
+    <dt>Imports
+      <span class="property-type">Haskell imports</span>
     </dt>
-    <dd> the Haskell type output by the function defined in this node. </dd>
-    <dt>Input function
+    <dd> comma separated list of all import statements to add to generated files, e.g. <span
+        style="font-family: monospace">System.Environment,
+        Data.Maybe, System.Random</span>.
+    </dd>
+    <dd> By default the following imports already included: <span
+        style="font-family: monospace">Striot.FunctionalIoTtypes,
+        Striot.FunctionalProcessing, Striot.Nodes, Control.Concurrent</span>
+    </dd>
+    <dt>Packages
+      <span class="property-type">Cabal packages</span>
+    </dt>
+    <dd> comma separated list of all Cabal packages to be installed.</dd>
+    <dt>Optimisation
+      <span class="property-type">Boolean</span>
+    </dt>
+    <dd> whether to enable logical optimisation of each partition or not.</dd>
+    <dt>Pre-source function
       <span class="property-type">Haskell function</span>
     </dt>
-    <dd> the function used to generate the stream data. The function needs to simply output data of the type defined by
-      the <strong>Output Type</strong> property. For example: <br>
-      <code>do</code><br>
-      &nbsp;&nbsp;<code> threadDelay (1000*1000)</code><br>
-      &nbsp;&nbsp;<code> return "Hello World!"</code></dd>
+    <dd> code to run prior to starting nodeSource.</dd>
     <!-- <dt class="optional">example <span class="property-type">string</span></dt>
     <dd> .</dd> -->
   </dl>
 
-  <h3>Outputs</h3>
-  <ol class="node-ports">
-    <li>Stream out
-      <dl class="message-properties">
-        <dt>Stream <span class="property-type">StrIoT Stream</span></dt>
-        <dd>a stream containing the data produced by the input function.</dd>
-      </dl>
-    </li>
-  </ol>
-
   <h3>Details</h3>
-  <p>This node allows you to define any function as an input to the Stream. This allows complete flexibility when
-    sourcing or generating Stream data.</p>
-  <p>The function needs to simply output data of the type defined by
-    the <strong>Output Type</strong> property.</p>
+  <p>This node sets all relevant generation options for StrIoT, including imports, packages, presource code and optimisation
+    settings. </p>
+  <p>See the relevant help sections above to learn more about each option.</p>
 
   <h3>References</h3>
   <ul>
-    <li><a href="https://github.com/striot/striot/">StrIot GitHub page</a> - full
-      documentation for StrIoT</li>
+    <li><a href="https://github.com/striot/striot/blob/master/src/Striot/CompileIoT.hs#L110">StrIoT Generate Opts
+        documentation</a>
+      - definition and defaults</li>
   </ul>
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("generic-input", {
-    color: "#C7E9C0",
+  RED.nodes.registerType("generation-options", {
+    color: "#C0C0C0",
     category: "StrIoT",
     defaults: {
       name: {
         value: ""
       },
       func: {
-        value: "-- add your code to produce an input here"
+        value: ""
       },
-      output: {
-        value: "String"
+      imports: {
+        value: ""
+      },
+      packages: {
+        value: ""
+      },
+      optimise: {
+        value: ""
       }
     },
     inputs: 0,
-    outputs: 1,
-    icon: "font-awesome/fa-sign-in",
-    label: function () {
-      return this.name || "generic input";
+    outputs: 0,
+    icon: "font-awesome/fa-cog",
+    label: function() {
+      return this.name || "generation options";
     },
-    labelStyle: function () {
+    labelStyle: function() {
       return this.name ? "node_label_italic" : "";
     },
-    oneditprepare: function () {
+    oneditprepare: function() {
       var that = this;
 
       this.editor = RED.editor.createEditor({
@@ -109,10 +136,10 @@
 
       RED.library.create({
         url: "functions", // where to get the data from
-        type: "generic-input", // the type of object the library is for
+        type: "generation-options", // the type of object the library is for
         editor: this.editor, // the field name the main text body goes to
         mode: "ace/mode/text",
-        fields: [],
+        fields: ["name", "outputs"],
         ext: "hs"
       });
       this.editor.focus();
@@ -122,7 +149,7 @@
         RED._("node-red:common.label.expand")
       );
 
-      $("#node-function-expand-js").on("click", function (e) {
+      $("#node-function-expand-js").on("click", function(e) {
         e.preventDefault();
         var value = that.editor.getValue();
         RED.editor.editJavaScript({
@@ -130,17 +157,17 @@
           width: "Infinity",
           cursor: that.editor.getCursorPosition(),
           mode: "ace/mode/text",
-          complete: function (v, cursor) {
+          complete: function(v, cursor) {
             that.editor.setValue(v, -1);
             that.editor.gotoLine(cursor.row + 1, cursor.column, false);
-            setTimeout(function () {
+            setTimeout(function() {
               that.editor.focus();
             }, 300);
           }
         });
       });
     },
-    oneditsave: function () {
+    oneditsave: function() {
       var annot = this.editor.getSession().getAnnotations();
       this.noerr = 0;
       $("#node-input-noerr").val(0);
@@ -155,11 +182,11 @@
       this.editor.destroy();
       delete this.editor;
     },
-    oneditcancel: function () {
+    oneditcancel: function() {
       this.editor.destroy();
       delete this.editor;
     },
-    oneditresize: function (size) {
+    oneditresize: function(size) {
       var rows = $("#dialog-form>div:not(.node-text-editor-row)");
       var height = $("#dialog-form").height();
       for (var i = 0; i < rows.length; i++) {

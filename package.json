@@ -9,7 +9,8 @@
     "nodes": {
       "filter": "nodes/filter.js",
       "generic-input": "nodes/generic-input.js",
-      "sink": "nodes/sink.js"
+      "sink": "nodes/sink.js",
+      "generation-options": "nodes/generation-options.js"
     }
   },
   "devDependencies": {
