@@ -4,20 +4,29 @@
         <div style="display: inline-block; width: calc(100% - 105px)"><input type="text" id="node-input-name"></div>
     </div>
     <div class="form-row">
-        <label style="display: block; width: 100%" for="node-input-imports"><i class="fas fa-sign-in"></i> Imports
+        <label style="display: block; width: 100%" for="node-input-imports"><i class="fa fa-sign-in"></i> Imports
           (comma separated list)</label>
         <div><input style="display: block; width: 100%" type="text" id="node-input-imports"></div>
     </div>
     <div class="form-row">
       <label style="display: block; width: 100%;" for="node-input-packages"><i
-          class="fas fa-cloud-download"></i>
+          class="fa fa-cloud-download"></i>
         Packages (comma separated
         list)</label>
       <div><input style="display: block; width: 100%; font-family: monospace" type="text" id="node-input-packages">
       </div>
     </div>
+    <div class="form-row">
+      <label for="node-input-optimise"><i class="fa fa-cog"></i>
+        Optimisation</label>
+        <div style="width:100%"></div>
+        &emsp;<div style="display:inline-block; width:auto;"><input type="checkbox" id="node-input-optimise"
+          style="display:inline-block; width:auto; vertical-align:top;">
+      Enable logical optimisation</div>
+    </div>
     <div class="form-row" style="margin-bottom: 0px;">
-        <label style="width: calc(100% - 105px)" for="node-input-func"><i class="fa fa-code"></i> Pre-source
+        <label style="width: calc(100% - 105px)" for="node-input-func"><i class="fa fa-code" aria-hidden="true"></i>
+          Pre-source
           function</label>
         <input style="font-family: monospace;" type="hidden" id="node-input-func" autofocus="autofocus">
     </div>
@@ -47,6 +56,10 @@
       <span class="property-type">Cabal packages</span>
     </dt>
     <dd> comma separated list of all Cabal packages to be installed.</dd>
+    <dt>Optimisation
+      <span class="property-type">Boolean</span>
+    </dt>
+    <dd> whether to enable logical optimisation of each partition or not.</dd>
     <dt>Pre-source function
       <span class="property-type">Haskell function</span>
     </dt>
@@ -56,8 +69,9 @@
   </dl>
 
   <h3>Details</h3>
-  <p>The filter node takes a stream as input, and generates a stream containing only those events that satisfy
-    the filter function.</p>
+  <p>This node sets all relevant generation options for StrIoT, including imports, packages, presource code and optimisation
+    settings. </p>
+  <p>See the relevant help sections above to learn more about each option.</p>
 
   <h3>References</h3>
   <ul>
@@ -83,18 +97,21 @@
       },
       packages: {
         value: ""
+      },
+      optimise: {
+        value: ""
       }
     },
     inputs: 0,
     outputs: 0,
     icon: "font-awesome/fa-cog",
-    label: function () {
+    label: function() {
       return this.name || "generation options";
     },
-    labelStyle: function () {
+    labelStyle: function() {
       return this.name ? "node_label_italic" : "";
     },
-    oneditprepare: function () {
+    oneditprepare: function() {
       var that = this;
 
       this.editor = RED.editor.createEditor({
@@ -132,7 +149,7 @@
         RED._("node-red:common.label.expand")
       );
 
-      $("#node-function-expand-js").on("click", function (e) {
+      $("#node-function-expand-js").on("click", function(e) {
         e.preventDefault();
         var value = that.editor.getValue();
         RED.editor.editJavaScript({
@@ -140,17 +157,17 @@
           width: "Infinity",
           cursor: that.editor.getCursorPosition(),
           mode: "ace/mode/text",
-          complete: function (v, cursor) {
+          complete: function(v, cursor) {
             that.editor.setValue(v, -1);
             that.editor.gotoLine(cursor.row + 1, cursor.column, false);
-            setTimeout(function () {
+            setTimeout(function() {
               that.editor.focus();
             }, 300);
           }
         });
       });
     },
-    oneditsave: function () {
+    oneditsave: function() {
       var annot = this.editor.getSession().getAnnotations();
       this.noerr = 0;
       $("#node-input-noerr").val(0);
@@ -165,11 +182,11 @@
       this.editor.destroy();
       delete this.editor;
     },
-    oneditcancel: function () {
+    oneditcancel: function() {
       this.editor.destroy();
       delete this.editor;
     },
-    oneditresize: function (size) {
+    oneditresize: function(size) {
       var rows = $("#dialog-form>div:not(.node-text-editor-row)");
       var height = $("#dialog-form").height();
       for (var i = 0; i < rows.length; i++) {
