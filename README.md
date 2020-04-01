@@ -36,7 +36,10 @@ From the Node-RED window, click the menu button in the top right corner, then **
 
 ## Nodes Added
 
-| Name          | Description                                                            |
-| ------------- | ---------------------------------------------------------------------- |
-| Filter        | Filters streams based on a user-defined function.                      |
-| Generic Input | Allows any user-defined function to be used as an input to the stream. |
+| Name               | Description                                                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| Filter             | Filters streams based on a user-defined function.                                                                   |
+| Generic Input      | Allows any user-defined function to be used as an input to the stream.                                              |
+| Sink               | Allows any user-defined function to be used as an ouput to the stream.                                              |
+| Map                | Maps values in the stream based on a user-defined function.                                                         |
+| Generation Options | Allows definition of the generation options, including imports, packages, presource code and optimisation settings. |
