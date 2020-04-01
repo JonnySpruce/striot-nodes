@@ -8,9 +8,10 @@
   "node-red": {
     "nodes": {
       "filter": "nodes/filter.js",
+      "generation-options": "nodes/generation-options.js",
+      "map": "nodes/map.js",
       "generic-input": "nodes/generic-input.js",
-      "sink": "nodes/sink.js",
-      "generation-options": "nodes/generation-options.js"
+      "sink": "nodes/sink.js"
     }
   },
   "devDependencies": {
