@@ -4,7 +4,7 @@
   "description": "Adds a number of nodes to Node-Red which allow for development of Striot stream processing graphs.",
   "main": "none",
   "author": "Jonny Spruce",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "node-red": {
     "nodes": {
       "filter": "nodes/filter.js",
