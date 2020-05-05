@@ -20,7 +20,11 @@ The nodes use user-defined Haskell code to manipulate data streams, which allows
 
 - [Node.js](https://nodejs.org/en/)
 - [Node-RED](https://nodered.org/)
-- Node-RED must have been run at least once using the `node-red` command in the terminal.
+- Node-RED must have been run at least once using the `node-red` command in the terminal
+
+Recommended:
+
+- [StrIoT GUI](https://github.com/JonnySpruce/striot-gui) tool - generates a stream processing application from the Node-RED export using these nodes
 
 ### Installation
 
@@ -37,6 +41,10 @@ Then in your Node-RED directory, simply install the nodes by running:
 Start Node-RED from the terminal with the command `node-red`, and there will be a new section of nodes labelled **StrIoT**, where you will find all supported nodes for the [StrIoT](https://github.com/striot/striot/) system.
 
 Simply drag and drop the nodes onto the canvas, and double click on a node to edit its properties and add code etc.
+
+### Examples
+
+There are also example flows in the [examples](examples) directory, which you can import into Node-RED to see how the flow is structured and the code is written. The files output by the [StrIoT GUI](https://github.com/JonnySpruce/striot-gui) tool are also included for each example, and can be run using the `docker-compose up` command in the directory of the example you want to run (**Note:** [Docker](https://www.docker.com/) must be installed).
 
 ### Exporting
 
